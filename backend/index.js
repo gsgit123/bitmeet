@@ -6,6 +6,8 @@ import { connectDB } from './lib/db.js';
 import authRoutes from './routes/auth.route.js';
 import cookieParser from 'cookie-parser';
 import messageRoutes from './routes/message.route.js';
+import meetRoutes from './routes/meet.route.js';
+import streamRoutes from './routes/stream.routes.js';
 
 dotenv.config();
 
@@ -25,6 +27,8 @@ connectDB();
 
 app.use('/api/auth',authRoutes);
 app.use('/api/message',messageRoutes);
+app.use('/api/meet',meetRoutes);
+app.use('/api/stream',streamRoutes);
 
 app.listen(PORT,()=>{
     console.log(`Server is running on port ${PORT}`);       

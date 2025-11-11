@@ -7,6 +7,7 @@ import CandidateSection from "./pages/dashboards/CandidateSection";
 import Authpage from './pages/login/Authpage';
 import { useAuthStore } from './store/useAuthStore';
 import Navbar from "./components/Navbar";
+import MeetPage from "./pages/MeetPage";
 
 const App = () => {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
@@ -22,6 +23,7 @@ const App = () => {
 
   const RequireAuth = ({ children, roles }) => {
     if (!authUser) return <Navigate to="/login" />;
+    console.log("Required roles:", roles, "User role:", authUser.role);
     if (roles && !roles.includes(authUser.role)) return <Navigate to="/login" />; // unauthorized
     return children;
   };
@@ -45,7 +47,7 @@ const App = () => {
       <Route
         path="/interviewSection"
         element={
-          <RequireAuth roles={["interview"]}>
+          <RequireAuth roles={["interviewer"]}>
             <InterviewSection />
           </RequireAuth>
         }
@@ -59,6 +61,8 @@ const App = () => {
           </RequireAuth>
         }
         />
+
+        <Route path="/meet/:meetId" element={<MeetPage/>}/>
     </Routes>
         </>
   );
