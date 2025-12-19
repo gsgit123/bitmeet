@@ -1,8 +1,10 @@
 import React from 'react';
 import { useAuthStore } from '../store/useAuthStore';
+import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
   const { logout, authUser } = useAuthStore();
+  const navigate = useNavigate();
 
   return (
     <nav className="flex justify-between items-center p-4 bg-gray-800 text-white">
@@ -20,7 +22,9 @@ const Navbar = () => {
             </button>
           </>
         ) : (
-          <span>Please log in</span>
+          <button onClick={()=>{
+            navigate('/login');
+          }}>Please Login</button>
         )}
       </div>
     </nav>

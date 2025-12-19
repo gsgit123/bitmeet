@@ -8,12 +8,26 @@ import cookieParser from 'cookie-parser';
 import messageRoutes from './routes/message.route.js';
 import meetRoutes from './routes/meet.route.js';
 import streamRoutes from './routes/stream.routes.js';
-
+import pistonRoutes from './routes/piston.route.js';
+import { Server } from 'socket.io';
+import http from 'http';
 dotenv.config();
 
 const app = express();
 
 const PORT = process.env.PORT;
+
+const server=http.createServer(app);
+
+const io=new Server(server,{
+    cors:{
+        origin:'http://localhost:5173',
+        methods:['GET','POST'],
+        credentials:true
+    }
+});
+
+
 
 app.use(cors({
     origin: 'http://localhost:5173',
@@ -29,8 +43,35 @@ app.use('/api/auth',authRoutes);
 app.use('/api/message',messageRoutes);
 app.use('/api/meet',meetRoutes);
 app.use('/api/stream',streamRoutes);
+app.use('/api/piston',pistonRoutes);
 
-app.listen(PORT,()=>{
+
+io.on("connection",(socket)=>{
+    console.log("New client connected",socket.id);
+
+    socket.on("join-room",(meetId)=>{
+        socket.join(meetId);
+        console.log(`Client with ID: ${socket.id} joined room: ${meetId}`);
+    });
+
+    socket.on("code-change",({meetId,code})=>{
+        socket.to(meetId).emit("code-update",code);
+    });
+
+    socket.on("input-change",({meetId,input})=>{
+        socket.to(meetId).emit("input-update",input);
+    });
+
+    socket.on("output-change",({meetId,output})=>{
+        socket.to(meetId).emit("output-update",output);
+    });
+
+    socket.on("disconnect",()=>{
+        console.log("Client disconnected",socket.id);
+    });
+})
+
+server.listen(PORT,()=>{
     console.log(`Server is running on port ${PORT}`);       
 
 });
