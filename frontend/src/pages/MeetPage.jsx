@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { StreamChat } from "stream-chat";
 import Editor from "@monaco-editor/react";
 import Split from "react-split";
+import {Excalidraw} from "@excalidraw/excalidraw";
 import {
   Chat,
   Channel,
@@ -15,6 +16,7 @@ import {
 import "stream-chat-react/dist/css/v2/index.css";
 import API from "../lib/axios";
 import {io} from "socket.io-client";
+import WhiteBoard from "../components/WhiteBoard";
 
 const socket=io("http://localhost:5000");
 
@@ -28,6 +30,7 @@ const MeetPage = () => {
   const [output,setOutput]=useState("");
   const [loading,setLoading]=useState(false);
   const [showChat,setShowChat]=useState(false);
+  const [whiteboardElements,setWhiteboardElements]=useState([]);
 
   useEffect(() => {
     let chatClient;
@@ -151,9 +154,9 @@ const MeetPage = () => {
       direction="horizontal">
       
 
-      <div className="bg-gray-200 flex items-center justify-center text-lg text-gray-600">
-        Whiteboard Section td
-      </div>
+      <div className="flex flex-col p-4 overflow-hidden">
+          <WhiteBoard meetId={meetId}/>
+        </div>
 
       {/* RIGHT PANEL - code editor*/}
       <div className="flex flex-col p-4 overflow-hidden">

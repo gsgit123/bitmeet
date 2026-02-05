@@ -66,6 +66,14 @@ io.on("connection",(socket)=>{
         socket.to(meetId).emit("output-update",output);
     });
 
+    socket.on("join-board",(meetId)=>{
+        socket.join(meetId);
+    });
+        socket.on("stroke",({meetId,stroke})=>{
+        socket.to(meetId).emit("stroke",stroke);
+    });
+        
+
     socket.on("disconnect",()=>{
         console.log("Client disconnected",socket.id);
     });
