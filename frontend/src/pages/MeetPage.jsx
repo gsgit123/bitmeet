@@ -155,6 +155,7 @@ const MeetPage = () => {
       
 
       <div className="flex flex-col p-4 overflow-hidden">
+        <h1>WhiteBoard</h1>
           <WhiteBoard meetId={meetId}/>
         </div>
 
