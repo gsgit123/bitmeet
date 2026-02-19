@@ -11,6 +11,7 @@ const WhiteBoard = ({ meetId }) => {
     const [currentStroke, setCurrentStroke] = useState([]);
     const [tool, setTool] = useState("pen");
     const [color, setColor] = useState("#000000");
+    
 
     useEffect(() => {
         const canvas = canvasRef.current;
